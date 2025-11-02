@@ -185,11 +185,13 @@
       font-weight: 700;
       animation: text-glitch 5s infinite steps(5, end);
     }
-    /* (Bug 修复) 签名 */
+    
+    /* === (布局修复) 签名 CSS === */
     .header-signature {
         width: 200px;
         filter: invert(1);
-        margin-bottom: 1.5rem;
+        /* (新) 改为 margin-top，因为它现在在按钮下面 */
+        margin-top: 1.5rem;
     }
     .header-signature img {
         width: 100%;
@@ -656,10 +658,10 @@ AUDIO MODULE DETECTED.
   
   <div id="cursor-trailer-container"></div>
 
-  <audio id="glitchAudio" src="https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/audios/click.MP3" preload="auto"></audio>
-  <audio id="clickAudio" src="https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/audios/click.MP3" preload="auto"></audio>
-  <audio id="BGM" src="https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/audios/BGM.MP3" preload="auto" loop></audio>
-  <audio id="typingAudio" src="https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/audios/click.MP3" preload="auto"></audio> 
+  <audio id="glitchAudio" src="https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/audios/click.mp3" preload="auto"></audio>
+  <audio id="clickAudio" src="https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/audios/click.mp3" preload="auto"></audio>
+  <audio id="BGM" src="https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/audios/BGM.mp3" preload="auto" loop></audio>
+  <audio id="typingAudio" src="https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/audios/click.mp3" preload="auto"></audio> 
 
 
   <div id="langToggle">EN</div>
@@ -669,14 +671,16 @@ AUDIO MODULE DETECTED.
   <header class="scanline-overlay">
     <div class="header-overlay">
       <h1 data-i18n="headerTitle">档案：传奇苍蝇头</h1>
-      <div class="header-signature">
-          <img src="https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/signature.png" alt="Signature">
-      </div>
+      
       <blockquote data-i18n="headerQuote">“还有我，传奇苍蝇头。”</blockquote>
       <p class="attribution" data-i18n="headerAttribution">(王宣智, 2025)</p>
       <button class="scroll-btn" onclick="document.querySelector('.surveillance-feed').scrollIntoView();" data-i18n="headerButton">
         [ 调取监控影像 ]
       </button>
+
+      <div class="header-signature">
+          <img src="https://cdn.jsdelivr.net/gh/RuikangWNemo/FirstFilmRoll@main/signature.png" alt="Signature">
+      </div>
     </div>
   </header>
 
@@ -752,7 +756,7 @@ AUDIO MODULE DETECTED.
   <footer>
     <div class="footer-content">
       <div class="footer-signature">
-        <img src="https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/signature.png" alt="Signature">
+        <img src="https://cdn.jsdelivr.net/gh/RuikangWNemo/FirstFilmRoll@main/signature.png" alt="Signature">
       </div>
       <p>© 2025 Ruikang Wang. All rights reserved.</p>
     </div>
@@ -1127,7 +1131,7 @@ AUDIO MODULE DETECTED.
         console.warn("!! SYSTEM INTEGRITY COMPROMISED !!");
         console.warn("Overdrive engaged. Control lost.");
         
-        playGlitchSound(); // M-音效
+        playGlitchSound(); // 触发一次音效
         document.body.classList.add('system-overdrive');
         overdriveToggle.classList.add('active');
         overdriveToggle.textContent = "COMPROMISED"; // 按钮文字变为“已损坏”
