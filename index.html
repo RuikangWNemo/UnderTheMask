@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="pageTitle">档案：传奇苍蝇头 | File: The Legendary Fly Head</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
+    /* ========= 全局重置与基础样式 ========= */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    * {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    body {
+      font-family: 'Roboto Mono', 'Courier New', monospace;
+      background: #0A0A0A;
+      color: #eee;
+      line-height: 1.6;
+      cursor: crosshair;
+      /* (优化) 为超载模式准备背景色过渡 */
+      transition: background-color 1s ease-in-out;
+    }
+    a { text-decoration: none; color: inherit; }
+    
+    /* (优化) 系统超载 1: 全局红色脉冲 */
+    body.system-overdrive {
+        animation: pulse-red 2s infinite ease-in-out;
+    }
+    @keyframes pulse-red {
+        0%, 100% { background-color: #0A0A0A; }
+        50% { background-color: #1a0a0a; }
+    }
+
+
+    /* ========= 语言与音频控制 ========= */
+    #langToggle, #audioToggle, #overdriveToggle {
+      position: fixed;
+      top: 15px;
+      background: rgba(0,0,0,0.6);
+      color: #eee;
+      border: 1px solid #777;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      z-index: 100001;
+      font-size: 0.9rem;
+      font-family: 'Roboto Mono', monospace;
+    }
+    #langToggle { right: 15px; }
+    #audioToggle { right: 100px; }
+    /* (优化) 超载按钮 */
+    #overdriveToggle {
+        right: 210px;
+        color: #f00;
+        border-color: #500;
+    }
+    #overdriveToggle.active {
+        background: #f00;
+        color: #fff;
+        border-color: #f00;
+        text-shadow: 0 0 5px #fff;
+    }
+    
+    #langToggle:hover, #audioToggle:hover, #overdriveToggle:hover {
+        background: #f00;
+        color: #fff;
+        border-color: #f00;
+    }
+
+    /* ========= 侵入式启动序列 ========= */
+    #interactionOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      z-index: 99999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Roboto Mono', monospace;
+      flex-direction: column;
+      cursor: pointer;
+      transition: opacity 0.5s ease-out;
+    }
+    #bootText {
+        font-size: 1.5rem;
+        text-align: center;
+        color: #0F0;
+        text-shadow: 0 0 5px #0F0;
+    }
+    #bootText .denied {
+        color: #f00;
+        text-shadow: 0 0 5px #f00;
+        animation: flicker 0.5s infinite steps(1);
+    }
+    #bootText .force-connect {
+        color: #fff;
+        background: #f00;
+        padding: 5px 10px;
+        margin-top: 20px;
+        display: inline-block;
+        animation: flicker 1.5s infinite steps(1);
+    }
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+    #interactionOverlay.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    /* ========= 扫描线 ========= */
+    .scanline-overlay {
+        position: relative;
+    }
+    .scanline-overlay::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* (优化) 准备动画 */
+        background-image: repeating-linear-gradient(
+            to bottom,
+            rgba(0,0,0,0),
+            rgba(0,0,0,0) 2px,
+            rgba(0,0,0,0.3) 3px,
+            rgba(0,0,0,0.3) 4px
+        );
+        background-repeat: repeat;
+        background-position: 0 0;
+        mix-blend-mode: overlay;
+        pointer-events: none;
+        z-index: 2;
+        opacity: 0.7;
+    }
+    /* (优化) 系统超载 2: 动态扫描线 */
+    body.system-overdrive .scanline-overlay::before {
+        animation: scanline-move 0.4s linear infinite;
+    }
+    @keyframes scanline-move {
+        from { background-position: 0 0; }
+        to { background-position: 0 8px; } /* 8px 是图案高度 */
+    }
+
+
+    /* ========= 头部区域 ========= */
+    header {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      /* === CDN 优化 === */
+      background-image: url('https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/images/photo22.JPG');
+      background-size: cover;
+      background-position: center;
+      box-shadow: inset 0 0 150px 50px #000;
+    }
+    .header-overlay {
+      position: relative;
+      z-index: 4;
+      height: 100%;
+      width: 100%;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 1rem;
+    }
+    .header-overlay h1 {
+      font-size: 3rem;
+      letter-spacing: 4px;
+      margin-bottom: 1.5rem;
+      color: #fff;
+      text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+      font-weight: 700;
+      animation: text-glitch 5s infinite steps(5, end);
+    }
+    /* (Bug 修复) 签名 */
+    .header-signature {
+        width: 200px;
+        filter: invert(1);
+        margin-bottom: 1.5rem;
+    }
+    .header-signature img {
+        width: 100%;
+    }
+    
+    @keyframes text-glitch {
+      0%, 100% {
+        clip-path: inset(0 0 0 0);
+        text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+      }
+      10% {
+        clip-path: inset(20% 0 30% 0);
+        transform: translateX(-5px);
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+      }
+      15% {
+        clip-path: inset(50% 0 10% 0);
+        transform: translateX(5px);
+        text-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+      }
+      20% {
+        clip-path: inset(10% 0 60% 0);
+        transform: translateX(-2px);
+      }
+      25% {
+        clip-path: inset(0 0 0 0);
+        transform: translateX(0);
+        text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+      }
+    }
+    
+    .header-overlay blockquote {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      max-width: 800px;
+      color: #eee;
+      font-style: italic;
+    }
+    .header-overlay .attribution {
+        font-size: 1rem;
+        color: #aaa;
+    }
+    .scroll-btn {
+      background: rgba(255,0,0,0.3);
+      border: 1px solid #f00;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      color: #eee;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 2rem;
+      font-family: 'Roboto Mono', monospace;
+    }
+    .scroll-btn:hover { background: rgba(255,0,0,0.6); }
+
+    /* “数据解密”标题特效 */
+    .decrypt-on-scroll {
+        color: #f00; 
+    }
+
+    /* ========= 档案介绍板块 ========= */
+    section.incident-file {
+      padding: 4rem 2rem;
+      background: #1a1a1a;
+      text-align: center;
+      position: relative;
+    }
+    section.incident-file h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      letter-spacing: 2px;
+      color: #fff;
+    }
+    .file-content {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: left;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #ddd;
+    }
+    .file-content p { margin-bottom: 1rem; }
+
+    /* ========= 装备信息板块 (Tech Specs) ========= */
+    section.tech-specs {
+      padding: 3rem 2rem;
+      background: #0A0A0A;
+      text-align: center;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #eee;
+      border-top: 1px dashed #555;
+      border-bottom: 1px dashed #555;
+    }
+    section.tech-specs h3 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      letter-spacing: 1px;
+      color: #fff;
+    }
+    .specs-content {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .specs-content p { margin-bottom: 0.8rem; }
+    .specs-content strong { color: #f00; font-weight: normal; }
+
+    /* ========= 核心模块：监控影像 (Surveillance Feed) ========= */
+    section.surveillance-feed {
+      padding: 4rem 2rem;
+      background: #111;
+      text-align: center;
+    }
+    section.surveillance-feed h2 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      letter-spacing: 2px;
+      color: #fff;
+    }
+    .main-monitor {
+      position: relative;
+      max-width: 1000px;
+      margin: 0 auto 1.5rem auto;
+      background: #000;
+      border: 3px solid #555;
+      padding: 5px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      transition: box-shadow 0.5s ease-in-out;
+    }
+    /* (优化) 系统超载 4: 警报监视器 */
+    body.system-overdrive .main-monitor {
+        animation: monitor-pulse 1s infinite;
+    }
+    @keyframes monitor-pulse {
+        0%, 100% { box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        50% { box-shadow: 0 0 40px #f00, 0 0 20px #f00 inset; }
+    }
+    
+    .main-monitor img {
+      width: 100%;
+      display: block;
+    }
+    .monitor-prev, .monitor-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      font-size: 40px;
+      font-weight: bold;
+      padding: 0 20px;
+      cursor: pointer;
+      z-index: 10;
+      user-select: none;
+      background: rgba(0,0,0,0.3);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .main-monitor:hover .monitor-prev,
+    .main-monitor:hover .monitor-next {
+        opacity: 0.8;
+    }
+    .monitor-prev:hover, .monitor-next:hover {
+        background: #f00;
+    }
+    .monitor-prev { left: 5px; }
+    .monitor-next { right: 5px; }
+
+    /* 故障/切换动画 */
+    .main-monitor img.glitching {
+        animation: glitch-anim 0.35s steps(4, end) forwards;
+    }
+    @keyframes glitch-anim {
+        0% { clip-path: inset(10% 0 80% 0); transform: translateX(-5px); }
+        25% { clip-path: inset(70% 0 10% 0); transform: translateX(5px); }
+        50% { clip-path: inset(30% 0 50% 0); transform: translateX(-3px); }
+        75% { clip-path: inset(90% 0 5% 0); transform: translateX(3px); }
+        100% { clip-path: inset(0 0 0 0); transform: translateX(0); }
+    }
+
+    /* 缩略图滚动条 */
+    .thumbnail-bar {
+      display: flex;
+      overflow-x: auto;
+      padding: 10px;
+      background: #1a1a1a;
+      border-top: 2px solid #333;
+      border-bottom: 2px solid #333;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .thumbnail-bar::-webkit-scrollbar { height: 8px; }
+    .thumbnail-bar::-webkit-scrollbar-track { background: #111; }
+    .thumbnail-bar::-webkit-scrollbar-thumb { background: #f00; }
+
+    .thumb-item {
+      height: 100px;
+      width: auto;
+      margin: 0 5px;
+      border: 2px solid #444;
+      transition: border-color 0.3s, transform 0.3s;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .thumb-item:hover {
+      border-color: #f00;
+      transform: scale(1.05);
+    }
+    .thumb-item.active {
+      border-color: #f00;
+      box-shadow: 0 0 10px #f00;
+      transform: scale(1.05);
+    }
+
+    /* ========= 影像归档 (Archive Grid) ========= */
+    section.archive-feed {
+        padding: 4rem 2rem;
+        background: #0A0A0A;
+        text-align: center;
+        border-top: 1px dashed #555;
+    }
+    section.archive-feed h2 {
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        letter-spacing: 2px;
+        color: #fff;
+    }
+    .archive-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .archive-item {
+        position: relative;
+        overflow: hidden; 
+        cursor: pointer;
+        border: 1px solid #333;
+    }
+    .archive-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.3s ease, filter 0.3s ease;
+        filter: brightness(0.8) grayscale(0.3);
+    }
+    .archive-item:hover img {
+        transform: scale(1.2); 
+        filter: brightness(1.1) grayscale(0);
+    }
+
+    /* ========= 摄影师笔记 ========= */
+    .photographer-notes {
+      padding: 4rem 2rem;
+      background: #111;
+      color: #ddd;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: left;
+      border-top: 1px dashed #555;
+    }
+    .photographer-notes h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      letter-spacing: 3px;
+      color: #fff;
+    }
+    .notes-content {
+      font-family: Georgia, serif;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #ccc;
+    }
+    .notes-content p { margin-bottom: 1.2rem; }
+
+    /* ========= 底部版权 ========= */
+    footer {
+      background: #000;
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #aaa;
+      border-top: 2px solid #333;
+    }
+    .footer-content p {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    .footer-signature {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .footer-signature img {
+      width: clamp(150px, 40vw, 300px);
+      height: auto;
+      filter: invert(1) drop-shadow(0 0 10px rgba(255, 0, 0, 0.5));
+    }
+
+    /* ========= 全屏模态框 (Lightbox) ========= */
+    .modal {
+      position: fixed;
+      z-index: 100002;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      opacity: 0;
+      display: none;
+      transition: opacity 0.5s ease;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal.show {
+      display: flex;
+      opacity: 1;
+    }
+    .modal-content {
+      display: block;
+      max-width: 90%;
+      max-height: 90%;
+      animation: zoomIn 0.5s ease;
+    }
+    @keyframes zoomIn {
+        from { transform: scale(0.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 35px;
+      color: #fff;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 100003;
+    }
+    .modal-prev, .modal-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      font-size: 40px;
+      font-weight: bold;
+      padding: 0 10px;
+      cursor: pointer;
+      z-index: 100003;
+      user-select: none;
+    }
+    .modal-prev { left: 20px; }
+    .modal-next { right: 20px; }
+
+    /* (优化) 系统超载 3: 光标残影 */
+    #cursor-trailer-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99998;
+        pointer-events: none;
+        overflow: hidden;
+    }
+    .cursor-trailer {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        color: #f00;
+        font-size: 20px;
+        font-weight: bold;
+        opacity: 1;
+        transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+    }
+    .cursor-trailer.is-fading {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+
+
+    /* ========= 响应式调整 ========= */
+    @media (max-width: 768px) {
+      .header-overlay h1 { font-size: 2rem; }
+      .header-overlay blockquote { font-size: 1.2rem; }
+      h2.decrypt-on-scroll { font-size: 2rem; }
+      .thumb-item { height: 80px; }
+      #langToggle { right: 10px; }
+      #audioToggle { right: 80px; }
+      #overdriveToggle { right: 165px; }
+      .archive-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+    }
+    
+    /* ========= (新) 恐慌/Jumpscare 特效 ========= */
+    #systemWarningOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 0, 0, 0.1);
+        z-index: 100003; /* 必须在所有元素之上，包括模态框 */
+        pointer-events: none;
+        display: none;
+        opacity: 0;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 2.5rem; /* 调小一点防止换行 */
+        color: #f00;
+        text-shadow: 0 0 10px #f00, 0 0 20px #f00;
+        font-weight: 700;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    
+    /* 激活时的动画 */
+    #systemWarningOverlay.is-active {
+        display: flex;
+        opacity: 1;
+        /* 闪烁并立即消失 */
+        animation: warning-glitch 0.4s 1 steps(2, end);
+    }
+
+    @keyframes warning-glitch {
+        0% { 
+            opacity: 0.8; 
+            transform: translateX(-10px); 
+            clip-path: inset(30% 0 30% 0);
+        }
+        25% { 
+            opacity: 0.5; 
+            transform: translateX(10px); 
+            clip-path: inset(50% 0 10% 0);
+        }
+        50% { 
+            opacity: 1; 
+            transform: scale(1.02);
+            clip-path: inset(10% 0 60% 0);
+        }
+        75% { 
+            opacity: 0.6; 
+            transform: translateX(-5px); 
+            clip-path: inset(80% 0 5% 0);
+        }
+        100% { 
+            opacity: 0; 
+            transform: scale(1);
+            clip-path: inset(0 0 0 0);
+        }
+    }
+  </style>
+</head>
+<body>
+  <div id="interactionOverlay">
+    <pre id="bootText">
+<span class="denied">ACCESS DENIED</span>
+SYSTEM LOCKED
+
+AUDIO MODULE DETECTED.
+...
+<span class="force-connect" data-i18n="bootText">[ FORCE CONNECTION ]</span>
+    </pre>
+  </div>
+  
+  <div id="cursor-trailer-container"></div>
+
+  <audio id="glitchAudio" src="https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/audios/click.MP3" preload="auto"></audio>
+  <audio id="clickAudio" src="https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/audios/click.MP3" preload="auto"></audio>
+  <audio id="BGM" src="https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/audios/BGM.MP3" preload="auto" loop></audio>
+  <audio id="typingAudio" src="https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/audios/click.MP3" preload="auto"></audio> 
+
+
+  <div id="langToggle">EN</div>
+  <div id="audioToggle"></div>
+  <div id="overdriveToggle">[ ! ]</div>
+
+  <header class="scanline-overlay">
+    <div class="header-overlay">
+      <h1 data-i18n="headerTitle">档案：传奇苍蝇头</h1>
+      <div class="header-signature">
+          <img src="https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/signature.png" alt="Signature">
+      </div>
+      <blockquote data-i18n="headerQuote">“还有我，传奇苍蝇头。”</blockquote>
+      <p class="attribution" data-i18n="headerAttribution">(王宣智, 2025)</p>
+      <button class="scroll-btn" onclick="document.querySelector('.surveillance-feed').scrollIntoView();" data-i18n="headerButton">
+        [ 调取监控影像 ]
+      </button>
+    </div>
+  </header>
+
+  <section class="incident-file">
+    <h2 class="decrypt-on-scroll" data-i18n="fileTitle">事件档案：#404</h2>
+    <div class="file-content">
+      <p data-i18n="filePara1">
+        2025年10月31日，万圣节之夜。一个代号“苍蝇头”的个体在建筑群中被目击。其动机不明。
+      </p>
+      <p data-i18n="filePara2">
+        该个体装备有战术背心和定制防毒面具，行动迅速且难以预测。回收的影像数据有限，但已揭示了其在多个区域（包括内部电梯和外部庭院）的活动踪迹。
+      </p>
+    </div>
+  </section>
+
+  <section class="tech-specs">
+    <h3 class="decrypt-on-scroll" data-i18n="specsTitle">影像数据</h3>
+    <div class="specs-content">
+       <p>
+        <strong data-i18n="specsPhotographerLabel">记录者：</strong>
+        <span data-i18n="specsPhotographerValue">王睿康 (Ruikang Wang)</span>
+      </p>
+      <p>
+        <strong data-i18n="specsDateLabel">日期：</strong>
+        <span data-i18n="specsDateValue">2025年10月31日</span>
+      </p>
+      <p>
+        <strong data-i18n="specsEquipmentLabel">设备：</strong>
+        <span data-i18n="specsEquipmentValue">Sony A7M4 | Tamron 28-200mm f/2.8-5.6</span>
+      </p>
+      <p>
+        <strong data-i18n="specsEditingLabel">后期：</strong>
+        <span data-i18n="specsEditingValue">Camera Raw</span>
+      </p>
+      <p>
+        <strong data-i18n="specsSubjectLabel">目标：</strong>
+        <span data-i18n="specsSubjectValue">王宣智 (Xuanzhi Wang) 饰 “传奇苍蝇头”</span>
+      </p>
+    </div>
+  </section>
+
+  <section class="surveillance-feed" id="feed">
+    <h2 class="decrypt-on-scroll" data-i18n="surveillanceTitle">监控影像 (精选)</h2>
+    
+    <div class="main-monitor scanline-overlay">
+      <img id="mainFeedImage" src="https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/images/photo1.JPG" alt="Main Surveillance Feed">
+      <span class="monitor-prev" id="monitorPrev">&#10094;</span>
+      <span class="monitor-next" id="monitorNext">&#10095;</span>
+    </div>
+
+    <div class="thumbnail-bar" id="thumbnailBar">
+    </div>
+  </section>
+
+  <section class="archive-feed">
+    <h2 class="decrypt-on-scroll" data-i18n="archiveTitle">影像归档 (全集)</h2>
+    <div class="archive-grid" id="archiveGrid">
+    </div>
+  </section>
+
+  <section class="photographer-notes">
+    <h2 class="decrypt-on-scroll" data-i18n="notesTitle">摄影师笔记</h2>
+    <div class="notes-content notes-content-zh">
+      <p>这次万圣节拍摄是一次即兴的创作。当我的朋友宣智穿上这套装备时，一个完整的故事线瞬间在我脑海中浮现。我们没有剧本，只是在校园的各个角落游走——从灯火通明的室外到那个充满戏剧性红光的电梯。</p>
+      <p>A7M4 和这支 28-200 的镜头组合提供了极大的灵活性，让我可以快速捕捉从广角氛围到特写的情绪。后期的色调（尤其是在电梯里）受到了电影的启发，我试图用高对比度和饱和的红色来营造一种紧张、神秘甚至危险的氛围。“苍蝇头”不再只是一个装扮，他成了这个空间里的一个“异常点”。</p>
+    </div>
+    <div class="notes-content notes-content-en">
+      <p>This Halloween shoot was an impromptu creation. The moment my friend Xuanzhi put on this gear, a complete storyline flashed in my mind. We had no script, just wandered through various corners of the campus—from the brightly lit outdoors to that dramatic red elevator.</p>
+      <p>The A7M4 and the 28-200mm lens combo offered immense flexibility, allowing me to quickly capture everything from wide atmospheric shots to tight emotional close-ups. The color grading in post (especially in the elevator) was film-inspired, where I tried to use high contrast and saturated reds to create a tense, mysterious, or even dangerous atmosphere. "Fly Head" was no longer just a costume; he became an 'anomaly' in the space.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-signature">
+        <img src="https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/signature.png" alt="Signature">
+      </div>
+      <p>© 2025 Ruikang Wang. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div id="photoModal" class="modal">
+    <span class="modal-close" id="modalClose">&times;</span>
+    <img class="modal-content" id="modalImage">
+    <span class="modal-prev" id="modalPrev">&#10094;</span>
+    <span class="modal-next" id="modalNext">&#10095;</span>
+  </div>
+  
+  <div id="systemWarningOverlay">
+    <div class="warning-text" data-i18n="warningText1">!! 警告：系统完整性受损 !!</div>
+    <div class="warning-text" data-i18n="warningText2">检测到未授权访问</div>
+  </div>
+
+  <script>
+    // === CDN 优化: 定义全局基础 URL ===
+    // 确保你的仓库是 public 的，并且分支是 main
+    const cdnBaseUrl = "https://cdn.jsdelivr.net/gh/RuikangWNemo/UnderTheMask@main/";
+
+    /***********************************************************
+     * 多语言翻译 (i18n 修复)
+     ***********************************************************/
+    const translations = {
+      zh: {
+        pageTitle: "档案：传奇苍蝇头",
+        bootText: "[ 强制连接 ]",
+        headerTitle: "档案：传奇苍蝇头",
+        headerQuote: "“还有我，传奇苍蝇头。”",
+        headerAttribution: "(王宣智, 2025)",
+        headerButton: "[ 调取监控影像 ]",
+        fileTitle: "事件档案：#404",
+        filePara1: "2025年10月31日，万圣节之夜。一个代号“苍蝇头”的个体在建筑群中被目击。其动机不明。",
+        filePara2: "该个体装备有战术背心和定制防毒面具，行动迅速且难以预测。回收的影像数据有限，但已揭示了其在多个区域（包括内部电梯和外部庭院）的活动踪迹。",
+        specsTitle: "影像数据",
+        specsPhotographerLabel: "记录者：",
+        specsPhotographerValue: "王睿康 (Ruikang Wang)",
+        specsDateLabel: "日期：",
+        specsDateValue: "2025年10月31日",
+        specsEquipmentLabel: "设备：",
+        specsEquipmentValue: "Sony A7M4 | Tamron 28-200mm f/2.8-5.6",
+        specsEditingLabel: "后期：",
+        specsEditingValue: "Camera Raw",
+        specsSubjectLabel: "目标：",
+        specsSubjectValue: "王宣智 (Xuanzhi Wang) 饰 “传奇苍蝇头”",
+        surveillanceTitle: "监控影像 (精选)",
+        archiveTitle: "影像归档 (全集)",
+        notesTitle: "摄影师笔记",
+        audioModes: ["全部播放", "全部静音", "BGM静音", "音效静音"],
+        // (新) Jumpscare 文本
+        warningText1: "!! 警告：系统完整性受损 !!",
+        warningText2: "检测到未授权访问"
+      },
+      en: {
+        pageTitle: "File: The Legendary Fly Head",
+        bootText: "[ FORCE CONNECTION ]",
+        headerTitle: "File: The Legendary Fly Head",
+        headerQuote: "“And me — the legendary Fly Head!”",
+        headerAttribution: "(Xuanzhi Wang, 2025)",
+        headerButton: "[ Access Surveillance Feed ]",
+        fileTitle: "Incident File: #404",
+        filePara1: "On Halloween night, October 31, 2025, an individual codenamed 'Fly Head' was sighted in the complex. Motive unknown.",
+        filePara2: "The individual was equipped with tactical gear and a custom gas mask, moving quickly and erratically. Recovered visual data is limited but shows activity in multiple zones, including internal elevators and exterior courtyards.",
+        specsTitle: "Image Data",
+        specsPhotographerLabel: "Recorder:",
+        specsPhotographerValue: "Ruikang Wang",
+        specsDateLabel: "Date:",
+        specsDateValue: "October 31, 2025",
+        specsEquipmentLabel: "Equipment:",
+        specsEquipmentValue: "Sony A7M4 | Tamron 28-200mm f/2.8-5.6",
+        specsEditingLabel: "Post-Processing:",
+        specsEditingValue: "Camera Raw",
+        specsSubjectLabel: "Target:",
+        specsSubjectValue: "Xuanzhi Wang as 'The Legendary Fly Head'",
+        surveillanceTitle: "Surveillance Feed (Selected)",
+        archiveTitle: "Image Archive (Full)",
+        notesTitle: "Photographer's Notes",
+        audioModes: ["Unmute All", "Mute All", "Mute BGM", "Mute FX"],
+        // (新) Jumpscare 文本
+        warningText1: "!! WARNING: SYSTEM INTEGRITY COMPROMISED !!",
+        warningText2: "UNAUTHORIZED ACCESS DETECTED"
+      }
+    };
+    
+    let currentLang = "zh";
+
+    function updateLanguage() {
+      document.title = translations[currentLang].pageTitle;
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if(translations[currentLang][key] === undefined) {
+            console.warn(`[i18n] Missing key: ${key} for lang: ${currentLang}`);
+            return;
+        }
+        // 特殊处理启动按钮
+        if (el.classList.contains('force-connect')) {
+            el.textContent = translations[currentLang][key];
+        } else {
+            el.innerHTML = translations[currentLang][key];
+        }
+      });
+      document.getElementById("langToggle").textContent = currentLang === "zh" ? "EN" : "中文";
+      
+      if (currentLang === "zh") {
+        document.querySelector(".notes-content-zh").style.display = "block";
+        document.querySelector(".notes-content-en").style.display = "none";
+      } else {
+        document.querySelector(".notes-content-zh").style.display = "none";
+        document.querySelector(".notes-content-en").style.display = "block";
+      }
+      updateAudioToggleLabel();
+    }
+
+
+    /***********************************************************
+     * 音频控制 (BGM Bug 修复 V2)
+     ***********************************************************/
+    let audioMode = 1; // 1: 全部静音
+    let effectsMuted = true;
+    const fadeDuration = 1000;
+    const bgmAudio = document.getElementById("BGM");
+    const glitchAudio = document.getElementById("glitchAudio");
+    const clickAudio = document.getElementById("clickAudio");
+    const typingAudio = document.getElementById("typingAudio");
+
+    function fadeBgmTo(targetVolume, duration) {
+       if (!bgmAudio) return;
+       const initialVolume = bgmAudio.volume;
+       const delta = targetVolume - initialVolume;
+       const startTime = performance.now();
+       
+       // (修复) 确保 play() 在音量 > 0 时被调用
+       if (targetVolume > 0 && bgmAudio.paused) {
+           bgmAudio.play().catch(e => console.warn("BGM 播放被浏览器阻止:", e));
+       }
+
+       function animate(time) {
+         let progress = (time - startTime) / duration;
+         if (progress > 1) progress = 1;
+         bgmAudio.volume = initialVolume + delta * progress;
+         if (progress < 1) {
+           requestAnimationFrame(animate);
+         } else if (targetVolume === 0) {
+           bgmAudio.pause(); // 仅在淡出结束时暂停
+         }
+       }
+       requestAnimationFrame(animate);
+    }
+
+    function updateAudioSettings() {
+      let targetVolume = (audioMode === 0 || audioMode === 3) ? 0.5 : 0; 
+      fadeBgmTo(targetVolume, fadeDuration);
+      effectsMuted = (audioMode === 1 || audioMode === 3);
+      updateAudioToggleLabel();
+    }
+
+    function updateAudioToggleLabel() {
+      const audioToggleBtn = document.getElementById("audioToggle");
+      if (audioToggleBtn) {
+        audioToggleBtn.textContent = translations[currentLang].audioModes[audioMode];
+      }
+    }
+
+    function playGlitchSound() {
+        if (glitchAudio && !effectsMuted) {
+            glitchAudio.currentTime = 0;
+            glitchAudio.volume = 0.6; 
+            glitchAudio.play().catch(err => {});
+        }
+    }
+    
+    function playClickSound() {
+        if (clickAudio && !effectsMuted) {
+            clickAudio.currentTime = 0;
+            clickAudio.volume = 0.3; 
+            clickAudio.play().catch(err => {});
+          }
+    }
+
+    function playTypingSound() {
+        if (typingAudio && !effectsMuted && typingAudio.paused) {
+            typingAudio.currentTime = 0;
+            typingAudio.volume = 0.4; 
+            typingAudio.play().catch(err => {});
+        }
+    }
+    
+    /***********************************************************
+     * "数据解密" 特效
+     ***********************************************************/
+    const decryptChars = "!<>-_\\/[]{}—=+*^?#________";
+    const decryptSpeed = 20; 
+    const decryptRevealSpeed = 50; 
+
+    function decryptEffect(element) {
+        // (修复) 确保我们总能拿到正确的 key
+        const textKey = element.dataset.i18n;
+        const text = translations[currentLang][textKey];
+        if (!text || element.dataset.decrypting) return;
+        
+        element.dataset.decrypting = "true";
+        let iteration = 0;
+        let interval = setInterval(() => {
+            playTypingSound(); 
+            element.textContent = text.split("")
+                .map((letter, index) => {
+                    if(index < iteration) {
+                        return text[index];
+                    }
+                    return decryptChars[Math.floor(Math.random() * decryptChars.length)];
+                })
+                .join("");
+            
+            if(iteration >= text.length){
+                clearInterval(interval);
+                element.textContent = text; 
+                element.style.color = "#fff"; 
+                element.dataset.decrypting = "false";
+            }
+            
+            iteration += 1 / (decryptSpeed / decryptRevealSpeed);
+        }, decryptSpeed);
+    }
+
+
+    /***********************************************************
+     * 监控影像 (精选集)
+     ***********************************************************/
+    const mainFeedImage = document.getElementById('mainFeedImage');
+    const thumbnailBar = document.getElementById('thumbnailBar');
+    const monitorPrev = document.getElementById('monitorPrev');
+    const monitorNext = document.getElementById('monitorNext');
+    
+    // === CDN 优化: 使用 cdnBaseUrl 拼接路径 ===
+    const selectedImages = [
+        cdnBaseUrl + 'images/photo1.JPG',
+        cdnBaseUrl + 'images/photo5.JPG',
+        cdnBaseUrl + 'images/photo7.JPG',
+        cdnBaseUrl + 'images/photo10.JPG',
+        cdnBaseUrl + 'images/photo17.JPG',
+        cdnBaseUrl + 'images/photo22.JPG',
+        cdnBaseUrl + 'images/photo27.JPG'
+    ];
+    let currentSelectedIndex = 0;
+    let slideshowInterval = null;
+
+    function displaySelectedImage(index) {
+        if (index === currentSelectedIndex && !mainFeedImage.classList.contains('glitching')) {
+            return; 
+        }
+        
+        currentSelectedIndex = index;
+        const newSrc = selectedImages[index];
+
+        playGlitchSound();
+        mainFeedImage.classList.add('glitching');
+        
+        setTimeout(() => {
+             mainFeedImage.src = newSrc;
+        }, 150); 
+
+        setTimeout(() => {
+            mainFeedImage.classList.remove('glitching');
+        }, 350);
+        
+        document.querySelectorAll('.thumb-item').forEach((thumb, i) => {
+            if (i === index) {
+                thumb.classList.add('active');
+                thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            } else {
+                thumb.classList.remove('active');
+            }
+        });
+        
+        resetSlideshowTimer();
+    }
+
+    function nextSelectedImage() {
+        let newIndex = (currentSelectedIndex + 1) % selectedImages.length;
+        displaySelectedImage(newIndex);
+    }
+    
+    function prevSelectedImage() {
+        let newIndex = (currentSelectedIndex - 1 + selectedImages.length) % selectedImages.length;
+        displaySelectedImage(newIndex);
+    }
+    
+    function startSlideshow() {
+        if (slideshowInterval) clearInterval(slideshowInterval);
+        slideshowInterval = setInterval(nextSelectedImage, 3000); 
+    }
+    
+    function resetSlideshowTimer() {
+        clearInterval(slideshowInterval);
+        // 只有在BGM播放时才自动轮播
+        if (audioMode === 0 || audioMode === 3) { 
+            slideshowInterval = setInterval(nextSelectedImage, 3000);
+        }
+    }
+
+    /***********************************************************
+     * 影像归档 (全集) 与 模态框
+     ***********************************************************/
+    const archiveGrid = document.getElementById('archiveGrid');
+    const modal = document.getElementById('photoModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalClose = document.getElementById('modalClose');
+    const modalPrev = document.getElementById('modalPrev');
+    const modalNext = document.getElementById('modalNext');
+    
+    const allImages = []; 
+    let currentModalIndex = 0;
+
+    function openModal(index) {
+        currentModalIndex = index;
+        modalImage.src = allImages[index];
+        modal.classList.add('show');
+        clearInterval(slideshowInterval); 
+    }
+
+    function closeModal() {
+        modal.classList.remove('show');
+        resetSlideshowTimer(); 
+    }
+
+    function showModalNext() {
+        playClickSound();
+        currentModalIndex = (currentModalIndex + 1) % allImages.length;
+        modalImage.src = allImages[currentModalIndex];
+    }
+
+    function showModalPrev() {
+        playClickSound();
+        currentModalIndex = (currentModalIndex - 1 + allImages.length) % allImages.length;
+        modalImage.src = allImages[currentModalIndex];
+    }
+
+    /***********************************************************
+     * (新) "系统超载" 与 "Jumpscare" 逻辑
+     ***********************************************************/
+    const overdriveToggle = document.getElementById('overdriveToggle');
+    const trailerContainer = document.getElementById('cursor-trailer-container');
+    const systemWarningOverlay = document.getElementById('systemWarningOverlay');
+
+    // Jumpscare 闪烁函数
+    function triggerScare() {
+        if (!document.body.classList.contains('system-overdrive')) return; // 仅在超载时触发
+
+        systemWarningOverlay.classList.add('is-active');
+        playGlitchSound(); // 播放故障音效
+        
+        setTimeout(() => {
+            systemWarningOverlay.classList.remove('is-active');
+        }, 400); // 必须匹配 CSS 动画时长
+    }
+
+    // 安排下一次 Jumpscare
+    function scheduleNextScare() {
+        const nextScareTime = 10000 + Math.random() * 10000; // 10-20 秒随机
+        setTimeout(() => {
+            triggerScare();
+            scheduleNextScare(); // 递归调用，无限循环
+        }, nextScareTime);
+    }
+    
+    // 强制开启超载模式 (这是核心)
+    function enableOverdrive() {
+        if (document.body.classList.contains('system-overdrive')) return; // 防止重复触发
+
+        console.warn("!! SYSTEM INTEGRITY COMPROMISED !!");
+        console.warn("Overdrive engaged. Control lost.");
+        
+        playGlitchSound(); // M-音效
+        document.body.classList.add('system-overdrive');
+        overdriveToggle.classList.add('active');
+        overdriveToggle.textContent = "COMPROMISED"; // 按钮文字变为“已损坏”
+        
+        // (新) 启动 Jumpscare 循环
+        scheduleNextScare(); 
+    }
+
+    // (新) 鼠标移动时的残影效果 (原功能保留)
+    document.addEventListener('mousemove', (e) => {
+        if (!document.body.classList.contains('system-overdrive')) return;
+
+        let trailer = document.createElement('div');
+        trailer.className = 'cursor-trailer';
+        trailer.textContent = '+'; // 残影形状
+        trailer.style.left = e.clientX + 'px';
+        trailer.style.top = e.clientY + 'px';
+        
+        trailerContainer.appendChild(trailer);
+
+        setTimeout(() => {
+            trailer.classList.add('is-fading');
+        }, 10); 
+        
+        setTimeout(() => {
+            trailer.remove(); // 动画结束后移除DOM
+        }, 400); // 必须匹配 CSS transition duration
+    });
+
+
+    /***********************************************************
+     * DOMContentLoaded 统一初始化
+     ***********************************************************/
+    document.addEventListener("DOMContentLoaded", () => {
+      updateLanguage();
+
+      // 1. 语言切换
+      document.getElementById("langToggle").addEventListener("click", () => {
+        currentLang = (currentLang === "zh") ? "en" : "zh";
+        updateLanguage();
+        playClickSound();
+      });
+
+      // 2. 音频控制
+      document.getElementById("audioToggle").addEventListener("click", (e) => {
+        e.stopPropagation();
+        audioMode = (audioMode + 1) % 4;
+        updateAudioSettings();
+        if (audioMode === 0 || audioMode === 3) {
+            resetSlideshowTimer();
+        } else {
+            clearInterval(slideshowInterval); 
+        }
+      });
+      
+      // 3. (修复) 启动覆盖层
+      const overlay = document.getElementById("interactionOverlay");
+      overlay.addEventListener("click", () => {
+          overlay.classList.add("fade-out");
+          
+          // (BGM 修复) 这是“唤醒”BGM的唯一时机
+          bgmAudio.volume = 0;
+          const playPromise = bgmAudio.play();
+          
+          if (playPromise !== undefined) {
+              playPromise.then(_ => {
+                  // 播放成功后，才正式切换模式并淡入
+                  audioMode = 0; 
+                  updateAudioSettings();
+                  startSlideshow(); 
+                  
+                  // (新) 自动触发超载
+                  console.log("System nominal. Engaging overdrive in 5 seconds...");
+                  setTimeout(enableOverdrive, 5000); // 5秒后自动开启
+
+              }).catch(error => {
+                  // 即使用户禁止了，也要继续
+                  console.error("BGM 播放失败 (可能被阻止):", error);
+                  audioMode = 1; // 保持静音模式
+                  updateAudioSettings();
+                  
+                  // (新) 即使 BGM 失败，也要在 5 秒后自动触发超载
+                  console.log("Audio module failed. Engaging overdrive in 5 seconds...");
+                  setTimeout(enableOverdrive, 5000); 
+              });
+          }
+          
+          setTimeout(() => {
+            overlay.style.display = 'none';
+          }, 500); 
+      }, { once: true }); 
+
+      // 4. 全局点击音效
+      document.addEventListener("click", function(e) {
+          // (新) 排除 overdriveToggle，因为它现在有自己的音效
+          const isButton = e.target.closest('button, a, .thumb-item, .archive-item, .modal-prev, .modal-next, .modal-close, #langToggle, #audioToggle');
+          if (isButton || e.target.closest('#interactionOverlay') || e.target.closest('#overdriveToggle')) return;
+          playClickSound();
+      });
+      
+      // 5. (新) 超载按钮 [!] 变为陷阱
+      // 用户点击 [!] 按钮会立即触发，而不是等待 5 秒
+      overdriveToggle.addEventListener('click', enableOverdrive);
+
+      // 6. 默认笔记显示
+      document.querySelector(".notes-content-en").style.display = "none";
+      
+      // 7. 动态填充“监控影像 (精选)”
+      selectedImages.forEach((src, index) => {
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = `Feed ${index + 1}`;
+          img.className = 'thumb-item';
+          if (index === 0) img.classList.add('active');
+          img.onclick = () => displaySelectedImage(index);
+          thumbnailBar.appendChild(img);
+      });
+      
+      // 8. 监控影像的左右箭头
+      monitorPrev.addEventListener('click', prevSelectedImage);
+      monitorNext.addEventListener('click', nextSelectedImage);
+
+      // 9. 动态填充“影像归档 (全集)”
+      for (let i = 1; i <= 27; i++) {
+          // === CDN 优化: 使用 cdnBaseUrl 拼接路径 ===
+          const path = cdnBaseUrl + `images/photo${i}.JPG`;
+          allImages.push(path); 
+          
+          const item = document.createElement('div');
+          item.className = 'archive-item';
+          item.onclick = () => openModal(i - 1); 
+          
+          const img = document.createElement('img');
+          img.src = path;
+          img.alt = `Archive ${i}`;
+          item.appendChild(img);
+          archiveGrid.appendChild(item);
+      }
+      
+      // 10. 模态框控制
+      modalClose.addEventListener('click', closeModal);
+      modalPrev.addEventListener('click', showModalPrev);
+      modalNext.addEventListener('click', showModalNext);
+      modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeModal(); 
+      });
+      
+      // 11. 模态框键盘控制
+      document.addEventListener('keydown', (e) => {
+          if (modal.classList.contains('show')) {
+              if (e.key === 'ArrowLeft') showModalPrev();
+              if (e.key === 'ArrowRight') showModalNext();
+              if (e.key === 'Escape') closeModal();
+          }
+      });
+      
+      // 12. 启动 "数据解密" 观察器
+      const decryptObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                  decryptEffect(entry.target);
+                  decryptObserver.unobserve(entry.target);
+              }
+          });
+      }, { threshold: 0.8 }); 
+
+      document.querySelectorAll('.decrypt-on-scroll').forEach(el => {
+          decryptObserver.observe(el);
+      });
+      
+    });
+  </script>
+</body>
+</html>
